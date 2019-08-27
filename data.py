@@ -15,4 +15,16 @@ def load_data(data_path,data):
 
 data=[]
 load_data('data',data)
-print(len(data))
+#for i in range(20):
+#    print((data[i]))
+
+def unbox(data):
+    data_detail=[]
+    for i in range(len(data)):
+        for k in range(len(data[i])):
+            data_detail.append(data[i][k])
+    return data_detail
+
+data_detail=unbox(data)
+#for i in range(20):
+print((data_detail[0]))
