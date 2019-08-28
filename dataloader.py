@@ -10,9 +10,10 @@ def dataloader(dataset, input_size, batch_size, split='train'):
             datasets.MNIST('data/mnist', train=True, download=True, transform=transform),
             batch_size=batch_size, shuffle=True)
     elif dataset=='pickle':
-        features,attackers,defenders=load_data('data')
-		result=merge(features,defenders,attackers)
-		
+        #features,attackers,defenders=load_data('data')
+		#result=merge(features,defenders,attackers)
+		dataset=data.generate_random()
+		data_loader=DataLoader(dataset)
 	elif dataset == 'fashion-mnist':
         data_loader = DataLoader(
             datasets.FashionMNIST('data/fashion-mnist', train=True, download=True, transform=transform),
@@ -40,4 +41,4 @@ def dataloader(dataset, input_size, batch_size, split='train'):
     return data_loader
 
 
-dataloader('pickle', input_size, batch_size, split='train')
+#dataloader('pickle', input_size, batch_size, split='train')

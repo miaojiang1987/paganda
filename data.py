@@ -37,12 +37,12 @@ def merge(features,defenders,attackers):
         result.append(feature)
     return result
 	
-features,defenders, attackers=load_data('data')
-result=merge(features,defenders,attackers)
-my_x=np.array(result)
-tensor_x = torch.stack([torch.Tensor(i) for i in my_x])
-my_dataset = utils.TensorDataset(tensor_x)
-my_dataloader = utils.DataLoader(my_dataset)
+#features,defenders, attackers=load_data('data')
+#result=merge(features,defenders,attackers)
+#my_x=np.array(result)
+#tensor_x = torch.stack([torch.Tensor(i) for i in my_x])
+#my_dataset = utils.TensorDataset(tensor_x)
+#my_dataloader = utils.DataLoader(my_dataset)
 #  print(result[0])
 
 def generate_random():
@@ -52,4 +52,4 @@ def generate_random():
     print("Successful Generate the dataset")
     return my_dataset	
 
-generate_random()
+#generate_random()
