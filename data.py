@@ -46,7 +46,7 @@ my_dataloader = utils.DataLoader(my_dataset)
 #  print(result[0])
 
 def generate_random():
-    array=np.random.rand(500,20,10)
+    array=np.random.rand(5000,20,10)
     tensor= torch.stack([torch.Tensor(i) for i in array])
     my_dataset = utils.TensorDataset(tensor)
     print("Successful Generate the dataset")

@@ -19,12 +19,13 @@ def parse_args():
     parser.add_argument('--gan_type', type=str, default='GAN',
                         choices=['GAN', 'CGAN', 'infoGAN', 'ACGAN', 'EBGAN', 'BEGAN', 'WGAN', 'WGAN_GP', 'DRAGAN', 'LSGAN','WGAN_GP_PIER'],
                         help='The type of GAN')
-    parser.add_argument('--dataset', type=str, default='mnist', choices=['mnist', 'fashion-mnist', 'cifar10', 'cifar10_1','cifar10_2','cifar10_3','cifar10_4','cifar10_5','cifar10_6','cifar10_7','cifar10_8','cifar10_9','cifar10_10','cifar100', 'svhn', 'stl10', 'lsun-bed','pier','celeba','celeba_1','celeba_2','celeba_3','celeba_4','celeba_5'],
+    parser.add_argument('--dataset', type=str, default='mnist', choices=['pickle','mnist', 'fashion-mnist', 'cifar10', 'cifar10_1','cifar10_2','cifar10_3','cifar10_4','cifar10_5','cifar10_6','cifar10_7','cifar10_8','cifar10_9','cifar10_10','cifar100', 'svhn', 'stl10', 'lsun-bed','pier','celeba','celeba_1','celeba_2','celeba_3','celeba_4','celeba_5'],
                         help='The name of dataset')
     parser.add_argument('--split', type=str, default='', help='The split flag for svhn and stl10')
     parser.add_argument('--epoch', type=int, default=50, help='The number of epochs to run')
     parser.add_argument('--batch_size', type=int, default=64, help='The size of batch')
-    parser.add_argument('--input_size', type=int, default=28, help='The size of input image')
+    #parser.add_argument('--input_size', type=int, default=28, help='The size of input image')
+    parser.add_argument('--input_size',type=int,default=20,help='The size of input data')
     parser.add_argument('--save_dir', type=str, default='models',
                         help='Directory name to save the model')
     parser.add_argument('--result_dir', type=str, default='results', help='Directory name to save the generated images')
