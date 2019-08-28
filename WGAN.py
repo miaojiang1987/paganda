@@ -96,6 +96,7 @@ class WGAN(object):
 
         # load dataset
         # load dataset
+		self.dataset=data.generate_random()
         #self.dataset = datasets.CIFAR10(root='data/cifar10', download=True, transform=transforms.Compose([
         #                               transforms.Resize(self.input_size),
         #                               transforms.CenterCrop(self.input_size),

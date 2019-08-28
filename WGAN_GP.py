@@ -95,13 +95,14 @@ class WGAN_GP(object):
         self.n_critic = 5               # the number of iterations of the critic per generator iteration
         self.repeat=args.repeat
         # load dataset
-        #self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
-        self.dataset = datasets.ImageFolder(root='data/'+self.datasetname, transform=transforms.Compose([
-                                       transforms.Resize(self.input_size),
-                                       transforms.CenterCrop(self.input_size),
-                                       transforms.ToTensor(),
-                                       transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-                                       ]))
+        self.dataset=data.generate_random()
+		#self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
+        #self.dataset = datasets.ImageFolder(root='data/'+self.datasetname, transform=transforms.Compose([
+        #                               transforms.Resize(self.input_size),
+        #                               transforms.CenterCrop(self.input_size),
+        #                               transforms.ToTensor(),
+        #                               transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        #                               ]))
         self.data_loader = tutils.data.DataLoader(self.dataset, batch_size=self.batch_size, shuffle=True, drop_last=True)
         #self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
         #indices = list(range(50000))
