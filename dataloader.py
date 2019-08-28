@@ -1,5 +1,7 @@
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
+import data 
+import numpy as np
 
 def dataloader(dataset, input_size, batch_size, split='train'):
     transform = transforms.Compose([transforms.Resize((input_size, input_size)), transforms.ToTensor(), transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))])
@@ -7,7 +9,11 @@ def dataloader(dataset, input_size, batch_size, split='train'):
         data_loader = DataLoader(
             datasets.MNIST('data/mnist', train=True, download=True, transform=transform),
             batch_size=batch_size, shuffle=True)
-    elif dataset == 'fashion-mnist':
+    elif dataset=='pickle':
+        features,attackers,defenders=load_data('data')
+		result=merge(features,defenders,attackers)
+		
+	elif dataset == 'fashion-mnist':
         data_loader = DataLoader(
             datasets.FashionMNIST('data/fashion-mnist', train=True, download=True, transform=transform),
             batch_size=batch_size, shuffle=True)
@@ -32,3 +38,6 @@ def dataloader(dataset, input_size, batch_size, split='train'):
             datasets.ImageFolder('data/pier',transform=transform),
             batch_size=batch_size, shuffle=True)
     return data_loader
+
+
+dataloader('pickle', input_size, batch_size, split='train')

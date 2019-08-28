@@ -1,5 +1,8 @@
 import pickle as pk
 import os
+import torch
+import numpy as np
+import torch.utils.data as utils
 
 #data = pk.load(open( "samples_211.pickle", "rb" ))
 
@@ -34,9 +37,10 @@ def merge(features,defenders,attackers):
         result.append(feature)
     return result
 	
-#features,defenders, attackers=load_data('data')
-#result=merge(features,defenders,attackers)
+features,defenders, attackers=load_data('data')
+result=merge(features,defenders,attackers)
 #  print(result[0])
+
 
 '''
 def unbox(data):
