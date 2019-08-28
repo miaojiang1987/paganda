@@ -40,8 +40,9 @@ def merge(features,defenders,attackers):
 features,defenders, attackers=load_data('data')
 result=merge(features,defenders,attackers)
 my_x=np.array(result)
-print(my_x)
-
+tensor_x = torch.stack([torch.Tensor(i) for i in my_x])
+my_dataset = utils.TensorDataset(tensor_x)
+my_dataloader = utils.DataLoader(my_dataset)
 #  print(result[0])
 
 
