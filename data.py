@@ -10,21 +10,33 @@ import os
 def load_data(data_path):
     data_files=os.listdir(data_path)
     features=[]
-    defender=[]
-    attacker=[]
+    defenders=[]
+    attackers=[]
     for i in range(len(data_files)):
         data_temp=pk.load(open(data_path+'/'+data_files[i],'rb'))
         for temp in data_temp:
             features.append(temp[0])
-            defender.append(temp[1])
-            attacker.append(temp[2])
+            defenders.append(temp[1])
+            attackers.append(temp[2])
 	
-    return features,defender,attacker
+    return features,defenders,attackers
 
-#features,defender, attacker=load_data('data')
-#print(features[0])
-#print(defender[0])
-#print(attacker[0])
+	
+def merge(features,defenders,attackers):
+    result=[]
+    for i in range(len(features)):
+        feature=features[i]
+        defender=defenders[i]
+        attacker=attackers[i]
+        for j in range(len(defender)):
+            feature[j].append(defender[j])
+            feature[j].append(attacker[j])
+        result.append(feature)
+    return result
+	
+#features,defenders, attackers=load_data('data')
+#result=merge(features,defenders,attackers)
+#  print(result[0])
 
 '''
 def unbox(data):
