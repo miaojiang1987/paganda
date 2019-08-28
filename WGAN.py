@@ -10,6 +10,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 import torchvision.utils as tvutils
 import torch.utils as tutils
 from torch.autograd import Variable
+import data
 
 class generator(nn.Module):
     # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
@@ -95,17 +96,17 @@ class WGAN(object):
 
         # load dataset
         # load dataset
-        self.dataset = datasets.CIFAR10(root='data/cifar10', download=True, transform=transforms.Compose([
-                                       transforms.Resize(self.input_size),
-                                       transforms.CenterCrop(self.input_size),
-                                       transforms.ToTensor(),
-                                       transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-                                       ]))
+        #self.dataset = datasets.CIFAR10(root='data/cifar10', download=True, transform=transforms.Compose([
+        #                               transforms.Resize(self.input_size),
+        #                               transforms.CenterCrop(self.input_size),
+        #                               transforms.ToTensor(),
+        #                               transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        #                               ]))
         self.data_loader = tutils.data.DataLoader(self.dataset, batch_size=self.batch_size, shuffle=True, drop_last=True)
         #self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
-        indices = list(range(50000))
-        subset_indices= indices[:1000]
-        train_sampler = SubsetRandomSampler(subset_indices)
+        #indices = list(range(50000))
+        #subset_indices= indices[:1000]
+        #train_sampler = SubsetRandomSampler(subset_indices)
         self.data_loader = torch.utils.data.DataLoader(self.dataset, batch_size=64, sampler=train_sampler,num_workers=1,drop_last=True)
         data = self.data_loader.__iter__().__next__()[0]
         self.mu = np.random.uniform(-1,1,(self.batch_size,self.z_dim))
