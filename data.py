@@ -45,16 +45,11 @@ my_dataset = utils.TensorDataset(tensor_x)
 my_dataloader = utils.DataLoader(my_dataset)
 #  print(result[0])
 
+def generate_random():
+    array=np.random.rand(500,20,10)
+    tensor= torch.stack([torch.Tensor(i) for i in array])
+    my_dataset = utils.TensorDataset(tensor)
+    print("Successful Generate the dataset")
+    return my_dataset	
 
-'''
-def unbox(data):
-    data_detail=[]
-    for i in range(len(data)):
-        for k in range(len(data[i])):
-            data_detail.append(data[i][k])
-    return data_detail
-
-data_detail=unbox(data)
-#for i in range(20):
-print((data_detail[0]))
-'''
+generate_random()
