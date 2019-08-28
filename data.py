@@ -39,6 +39,9 @@ def merge(features,defenders,attackers):
 	
 features,defenders, attackers=load_data('data')
 result=merge(features,defenders,attackers)
+my_x=np.array(result)
+print(my_x)
+
 #  print(result[0])
 
 
