@@ -11,6 +11,7 @@ import torchvision.utils as tvutils
 import torch.utils as tutils
 from torch.autograd import Variable
 import image_slicer
+import pickle_loader as pl
 
 class generator(nn.Module):
     # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
@@ -95,8 +96,9 @@ class WGAN_GP(object):
         self.n_critic = 5               # the number of iterations of the critic per generator iteration
         self.repeat=args.repeat
         # load dataset
-        self.dataset=data.generate_random()
-		#self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
+        self.dataset=pl.generate_random()
+        print(self.dataset)
+        #self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
         #self.dataset = datasets.ImageFolder(root='data/'+self.datasetname, transform=transforms.Compose([
         #                               transforms.Resize(self.input_size),
         #                               transforms.CenterCrop(self.input_size),
@@ -150,7 +152,7 @@ class WGAN_GP(object):
         for epoch in range(self.epoch):
             self.G.train()
             epoch_start_time = time.time()
-            for iter, (x_, _) in enumerate(self.data_loader):
+            for iter, x_ in enumerate(self.data_loader):
                 if iter == self.data_loader.dataset.__len__() // self.batch_size:
                     break
 

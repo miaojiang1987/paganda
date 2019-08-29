@@ -3,7 +3,7 @@ import os
 import torch
 import numpy as np
 import torch.utils.data as utils
-
+import torch.utils as tutils
 #data = pk.load(open( "samples_211.pickle", "rb" ))
 
 #print(type(data))
@@ -48,8 +48,7 @@ def merge(features,defenders,attackers):
 def generate_random():
     array=np.random.rand(5000,20,10)
     tensor= torch.stack([torch.Tensor(i) for i in array])
-    my_dataset = utils.TensorDataset(tensor)
+#    my_dataset = utils.TensorDataset(tensor)
     print("Successful Generate the dataset")
-    return my_dataset	
+    return tensor
 
-#generate_random()
