@@ -97,7 +97,7 @@ class WGAN_GP(object):
         self.repeat=args.repeat
         # load dataset
         self.dataset=pl.generate_random()
-        print(self.dataset)
+        #print(self.dataset)
         #self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
         #self.dataset = datasets.ImageFolder(root='data/'+self.datasetname, transform=transforms.Compose([
         #                               transforms.Resize(self.input_size),
