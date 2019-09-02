@@ -46,9 +46,197 @@ def merge(features,defenders,attackers):
 #  print(result[0])
 
 def generate_random():
-    array=np.random.rand(5000,20,10)
-    tensor= torch.stack([torch.Tensor(i) for i in array])
+    array=np.random.rand(512,3,20,10)
+    additional_array=np.random.rand(512,3,64,64)
+    additional_array.fill(0.0)
+    for i in range(512):
+        for m in range(3):
+            for j in range(20):
+                for k in range(10):
+                    additional_array[i][m][j][k]=array[i][m][j][k]
+    tensor= torch.stack([torch.Tensor(i) for i in additional_array])
+    result=[]
+    for i in range(len(tensor)):
+        result.append((tensor[i],0))
 #    my_dataset = utils.TensorDataset(tensor)
     print("Successful Generate the dataset")
-    return tensor
+    return result
 
+def read_from_data(filename):
+    array=np.random.rand(32,3,20,10)
+    additional_array=np.random.rand(32,3,64,64)
+    additional_array.fill(0.0)
+    file_open=open(filename,'r')
+    feature_lines=[]
+    defenders_lines=[]
+    attackers_lines=[]
+    for i in range(128):
+        feature_lines.append(file_open.readline())
+    for i in range(128):
+        defenders_lines.append(file_open.readline())
+    for i in range(128):
+        attackers_lines.append(file_open.readline())
+    for i in range(32):
+        line=feature_lines[i]
+        data=line.split('\n')[0].split(' ')
+        for dim in range(3):
+            for j in range(160):
+                array[i][dim][j//8][j%8]=(float)(data[j])
+    for i in range(32):
+        line=defenders_lines[i]
+        data=line.split('\n')[0].split(' ')
+        for dim in range(3):
+            for j in range(20):
+                array[i][dim][j][8]=(float)(data[j])
+    for i in range(32):
+        line=attackers_lines[i]
+        data=line.split('\n')[0].split(' ')
+        for dim in range(3):
+            for j in range(20):
+                array[i][dim][j][9]=(float)(data[j])
+    for i in range(32):
+        for m in range(3):
+            for j in range(20):
+                for k in range(10):
+                    additional_array[i][m][j][k]=array[i][m][j][k]
+    tensor=torch.stack([torch.Tensor(i) for i in additional_array])
+    result=[]
+    for i in range(len(tensor)):
+        result.append((tensor[i],0))
+    print("Successful Generate the dataset")
+    file_write=open('transformed_array.out','w')
+    for image in range(32):
+        #for dim in range(3):
+        for i in range(20):
+            for j in range(10):
+                file_write.write((str)(additional_array[image][0][i][j])+' ')
+        file_write.write('\n')
+    file_write.close()
+    return result
+
+def gather_trained_data(read_path,existing_file,size,add_size):
+    total_size=size+add_size
+    additional_array=np.random.rand(total_size,3,64,64)
+    additional_array.fill(0.0)
+    file_read=open(existing_file,'r')
+    lines=[]
+    for i in range(size):
+        line=file_read.readline()
+        lines.append(line)
+    for i in range(size):
+        line=lines[i]
+        data=line.split('\n')[0].split(' ')
+        for dim in range(3):
+            for j in range(200):
+                if j<160:
+                    additional_array[i][dim][j//8][j%8]=(float)(data[j])
+                if j>=160 and j<180:
+                    additional_array[i][dim][j-160][8]=(float)(data[j])
+                if j>=180 and j<200:
+                    additional_array[i][dim][j-180][9]=(float)(data[j])
+    file_read.close()
+    files=os.listdir(read_path)
+    file_number=0
+    for filename in files:
+        file_read=open(read_path+'/'+filename,'r')
+        line=file_read.readline()
+        data=line.split('\n')[0].split(' ')
+        for dim in range(3):
+            for i in range(200):
+                if i<160:
+                    additional_array[file_number+size][dim][i//8][i%8]=(float)(data[i])
+                if i>=160 and i<180:
+                    additional_array[file_number+size][dim][i-160][8]=(float)(data[i])
+                if i>=180:
+                    additional_array[file_number+size][dim][i-180][9]=(float)(data[i])
+        file_number+=1
+    tensor=torch.stack([torch.Tensor(i) for i in additional_array])
+    result=[]
+    for i in range(len(tensor)):
+        result.append((tensor[i],0))
+    print("Successful Generate the dataset")
+    file_write=open('transformed_array.out','w')
+    for image in range(size+add_size):
+        for i in range(20):
+            for j in range(10):
+                file_write.write((str)(additional_array[image][0][i][j])+' ')
+        file_write.write('\n')
+    file_write.close()
+    return result
+
+def read_from_data_for_k_folder(filename,folder):
+    array=np.random.rand(32,3,20,10)
+    additional_array=np.random.rand(32,3,64,64)
+    additional_array.fill(0.0)
+    array_result=[]
+    file_open=open(filename,'r')
+    feature_lines=[]
+    defenders_lines=[]
+    attackers_lines=[]
+    for i in range(128):
+        feature_lines.append(file_open.readline())
+    for i in range(128):
+        defenders_lines.append(file_open.readline())
+    for i in range(128):
+        attackers_lines.append(file_open.readline())
+    for i in range(32):
+        line=feature_lines[i]
+        data=line.split('\n')[0].split(' ')
+        for dim in range(3):
+            for j in range(160):
+                array[i][dim][j//8][j%8]=(float)(data[j])
+    for i in range(32):
+        line=defenders_lines[i]
+        data=line.split('\n')[0].split(' ')
+        for dim in range(3):
+            for j in range(20):
+                array[i][dim][j][8]=(float)(data[j])
+    for i in range(32):
+        line=attackers_lines[i]
+        data=line.split('\n')[0].split(' ')
+        for dim in range(3):
+            for j in range(20):
+                array[i][dim][j][9]=(float)(data[j])
+    for i in range(32):
+        for m in range(3):
+            for j in range(20):
+                for k in range(10):
+                    additional_array[i][m][j][k]=array[i][m][j][k]
+    if folder==1:
+        for i in range(24):
+            array_result.append(additional_array[i])
+    elif folder==2:
+        for i in range(8):
+            array_result.append(additional_array[i])
+        for i in range(16,32):
+            array_result.append(additional_array[i])
+    elif folder==3:
+        for i in range(16):
+            array_result.append(additional_array[i])
+        for i in range(24,32):
+            array_result.append(additional_array[i])
+    else:
+        for i in range(8,32):
+            array_result.append(additional_array[i])
+    tensor=torch.stack([torch.Tensor(i) for i in array_result])
+   
+    result=[]
+    for i in range(len(tensor)):
+        result.append((tensor[i],0))
+
+    print("Successful Generate the dataset")
+    #file_write=open('transformed_array.out','w')
+    #for image in range(32):
+        #for dim in range(3):
+    #    for i in range(20):
+    #     for j in range(10):
+    #            file_write.write((str)(additional_array[image][0][i][j])+' ')
+    #    file_write.write('\n')
+    #file_write.close()
+    
+    return result
+
+
+#result=read_from_data_for_k_folder('training.out',1)
+#print(len(result))
+#print(result[0][0].size())
