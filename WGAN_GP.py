@@ -91,12 +91,16 @@ class WGAN_GP(object):
         self.gpu_mode = args.gpu_mode
         self.model_name = args.gan_type
         self.input_size = args.input_size
+        self.folder=args.folder
         self.z_dim = 62
         self.lambda_ = 10
         self.n_critic = 5               # the number of iterations of the critic per generator iteration
         self.repeat=args.repeat
         # load dataset
-        self.dataset=pl.generate_random()
+        #self.dataset=pl.generate_random()
+        self.dataset=pl.read_from_data_for_k_folder('training.out',folder)
+        #self.dataset=pl.gather_trained_data('results_GAN_Game','transformed_array.out',48,16)
+        #print(self.dataset[0])
         #print(self.dataset)
         #self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
         #self.dataset = datasets.ImageFolder(root='data/'+self.datasetname, transform=transforms.Compose([
@@ -152,10 +156,10 @@ class WGAN_GP(object):
         for epoch in range(self.epoch):
             self.G.train()
             epoch_start_time = time.time()
-            for iter, x_ in enumerate(self.data_loader):
+            for iter, (x_,_) in enumerate(self.data_loader):
                 if iter == self.data_loader.dataset.__len__() // self.batch_size:
                     break
-
+                #print(x_.size())
                 z_ = torch.rand((self.batch_size, self.z_dim))
                 if self.gpu_mode:
                     x_, z_ = x_.cuda(), z_.cuda()
@@ -207,13 +211,13 @@ class WGAN_GP(object):
 
                     self.train_hist['D_loss'].append(D_loss.item())
 
-                if ((iter + 1) % 100) == 0:
+                if ((iter + 1) % 20) == 0:
                     print("Epoch: [%2d] [%4d/%4d] D_loss: %.8f, G_loss: %.8f" %
                           ((epoch + 1), (iter + 1), self.data_loader.dataset.__len__() // self.batch_size, D_loss.item(), G_loss.item()))
 
             self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
-            with torch.no_grad():
-                self.visualize_results((epoch+1))
+            #with torch.no_grad():
+            #    self.visualize_results((epoch+1))
     
         self.train_hist['total_time'].append(time.time() - start_time)
         print("Avg one epoch time: %.2f, total %d epochs time: %.2f" % (np.mean(self.train_hist['per_epoch_time']),
@@ -221,9 +225,9 @@ class WGAN_GP(object):
         print("Training finish!... save training results")
         
         self.save()
-        #torch.save(self.G.state_dict(), "%s/generator_epoch_%03d.pth" % ("model_result_all", epoch))
-        torch.save(self.D.state_dict(),"%s/discriminator_epoch_%03d.pth" % ("model_result_distributed_"+(str)(self.datasetname.split('_')[1]), epoch))
-        torch.save(self.G.state_dict(), "%s/generator_epoch_%03d.pth" % ("model_result_distributed_"+(str)(self.datasetname.split('_')[1]), epoch))
+        torch.save(self.G.state_dict(), "%s/generator_epoch_%03d.pth" % ("models", epoch))
+        #torch.save(self.D.state_dict(),"%s/discriminator_epoch_%03d.pth" % ("model_result_distributed_"+(str)(self.datasetname.split('_')[1]), epoch))
+        #torch.save(self.G.state_dict(), "%s/generator_epoch_%03d.pth" % ("model_result_distributed_"+(str)(self.datasetname.split('_')[1]), epoch))
         #utils.generate_animation(self.result_dir + '/' + self.datasetname + '/' + self.model_name + '/' + self.model_name,
                                  #self.epoch)
         #utils.loss_plot(self.train_hist, os.path.join(self.save_dir, self.datasetname, self.model_name), self.model_name)
@@ -252,13 +256,23 @@ class WGAN_GP(object):
             samples = samples.cpu().data.numpy().transpose(0, 2, 3, 1)
         else:
             samples = samples.data.numpy().transpose(0, 2, 3, 1)
-
-        samples = (samples + 1) / 2
-        utils.save_images(samples[:image_frame_dim * image_frame_dim, :, :, :], [image_frame_dim, image_frame_dim],
-                          self.result_dir + '/' + self.datasetname + '/' + self.model_name + '/' + self.model_name + '_epoch%03d' % epoch + '.png')
-        if epoch==self.epoch:
-            tiles = image_slicer.slice(self.result_dir + '/' + self.datasetname + '/' + self.model_name + '/' +'/WGAN_GP_epoch{0}.png'.format(self.epoch), 64, save=False)		
-            image_slicer.save_tiles(tiles, directory=self.result_dir + '/' + self.datasetname + '/' + self.model_name +'/sliced',prefix='fake_samples_')
+        #print(samples.shape)
+        #file_write=open('results.out','a')
+       
+        for img in range(self.batch_size):
+            file_write=open('./results_GAN_Game_'+(str)(self.folder)+'/results_'+(str)(img)+'.out','w')
+            for dim in range(3):
+                for i in range(20):
+                    for j in range(10):
+                        file_write.write((str)(samples[img][i][j][dim])+' ')
+                file_write.write('\n')
+            file_write.close()
+        #samples = (samples + 1) / 2
+        #utils.save_images(samples[:image_frame_dim * image_frame_dim, :, :, :], [image_frame_dim, image_frame_dim],
+        #                  self.result_dir + '/' + self.datasetname + '/' + self.model_name + '/' + self.model_name + '_epoch%03d' % epoch + '.png')
+        #if epoch==self.epoch:
+        #    tiles = image_slicer.slice(self.result_dir + '/' + self.datasetname + '/' + self.model_name + '/' +'/WGAN_GP_epoch{0}.png'.format(self.epoch), 64, save=False)		
+        #    image_slicer.save_tiles(tiles, directory=self.result_dir + '/' + self.datasetname + '/' + self.model_name +'/sliced',prefix='fake_samples_')
 
 
     def save(self):
