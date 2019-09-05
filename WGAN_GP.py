@@ -98,7 +98,10 @@ class WGAN_GP(object):
         self.repeat=args.repeat
         # load dataset
         #self.dataset=pl.generate_random()
-        self.dataset=pl.read_from_data_for_k_folder('training.out',folder)
+        if self.repeat==0:
+            self.dataset=pl.read_from_data_for_k_folder('pickle_seed.out',self.folder)
+        else:
+            self.dataset=pl.read_from_data_for_k_folder_add_size('result_collection',self.folder,32+(self.repeat-1)*16,16,self.repeat)
         #self.dataset=pl.gather_trained_data('results_GAN_Game','transformed_array.out',48,16)
         #print(self.dataset[0])
         #print(self.dataset)
@@ -225,7 +228,8 @@ class WGAN_GP(object):
         print("Training finish!... save training results")
         
         self.save()
-        torch.save(self.G.state_dict(), "%s/generator_epoch_%03d.pth" % ("models", epoch))
+        torch.save(self.G.state_dict(), "%s/generator_repeat_%d.pth" % ("distributed_model_"+(str)(self.folder), self.repeat))
+        torch.save(self.D.state_dict(), "%s/discriminator_repeat_%d.pth" %("distributed_model_"+(str)(self.folder),self.repeat))
         #torch.save(self.D.state_dict(),"%s/discriminator_epoch_%03d.pth" % ("model_result_distributed_"+(str)(self.datasetname.split('_')[1]), epoch))
         #torch.save(self.G.state_dict(), "%s/generator_epoch_%03d.pth" % ("model_result_distributed_"+(str)(self.datasetname.split('_')[1]), epoch))
         #utils.generate_animation(self.result_dir + '/' + self.datasetname + '/' + self.model_name + '/' + self.model_name,

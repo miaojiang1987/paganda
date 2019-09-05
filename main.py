@@ -37,6 +37,8 @@ def parse_args():
     parser.add_argument('--gpu_mode', type=bool, default=True)
     parser.add_argument('--benchmark_mode', type=bool, default=True)
     parser.add_argument('--repeat', type=int, default=1)
+    parser.add_argument('--folder', type=int, default=1)
+    parser.add_argument('--time',type=int,default=0)
     parser.add_argument("--netD_path", default="model_result_distributed/discriminator_epoch_099.pth",help="file path to D network,to continue training ")
     parser.add_argument("--netG_path", default="model_result_distributed/generator_epoch_099.pth",help="file path to G network,to continue training")
     return check_args(parser.parse_args())
