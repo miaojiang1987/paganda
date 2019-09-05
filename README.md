@@ -1,3 +1,4 @@
 # paganda
 
-## PAGANDA for reinforcement learning
+## PAGANDA for reinforcement learningGANDA for game theoretic decision-focused learning
+
