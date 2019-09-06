@@ -11,7 +11,7 @@ seed: 10
 two stage training error:  4.752594947814941
 two stage test error:  5.358953952789307
 two stage train EU average:  -0.8161029699905792
-two stage test EU average:  -1.4842394388576061
+two stage test EU average:  -1.4396394388576061
 0 1.255252469156403
 test 0: 57.495655
 10 0.9038794762163889
