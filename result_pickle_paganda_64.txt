@@ -1,0 +1,54 @@
+in EU average:  -2.183555387264195e-15
+unif test EU average:  -1.3868025613934519e-15
+0 5.431933032765108
+val 0: 5.269416
+5 5.331809997558594
+val 5: 5.581261
+Two Stage Error:
+seed: 10
+two stage training error:  5.868694305419922
+two stage test error:  6.3678178787231445
+two stage train EU average:  -0.8161029699905782
+two stage test EU average:  -1.3672394388576072
+0 -0.05051430407911539
+test 0: -0.000000
+10 -0.05051429776358418
+test 10: -0.000000
+20 -0.05051429648301564
+test 20: -0.000000
+30 -0.050514308095443994
+test 30: -0.000000
+40 -0.05051431886386126
+test 40: -0.000000
+50 -0.050514327827841043
+test 50: -0.000000
+End to end Error:
+seed: 10
+End to end training error:  -0.0
+End to end test error:  -0.0
+End to end train EU average:  -2.4158661663956494e-15
+End to end test EU average:  -2.4523232321984232e-15
+---Values---
+OPT Train:  -2.4158661663956494e-15
+OPT Test:  -3.7747335393001785e-15
+2 Stage Train:  -0.8161029699905782
+2 Stage Test:  -1.4842394388576072
+Uniform Train:  -2.183555387264195e-15
+Uniform Test:  -1.3868025613934519e-15
+End to End Train:  -2.4158661663956494e-15
+End to End Train:  -3.7747335393001785e-15
+2 Stage Train CE:  5.868694305419922
+2 Stage Test CE:  6.3678178787231445
+End to End Train CE:  3.4976634979248047
+End to End Test CE:  3.5903780460357666
+---Training Gaps---
+OPT - 2 Stage:  0.8161029699905757
+2 Stage - Uniform:  -0.816102969990576
+OPT - END:  0.0
+END - 2 Stage:  0.8161029699905757
+---Test Gaps---
+OPT - 2 Stage:  1.4842394388576035
+2 Stage - Uniform:  -1.484239438857606
+OPT - END:  0.0
+END - 2 Stage:  1.4842394388576035
+
