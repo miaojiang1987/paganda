@@ -27,7 +27,7 @@ seed: 10
 End to end training error:  -0.0
 End to end test error:  -0.0
 End to end train EU average:  -2.4158661663956494e-15
-End to end test EU average:  -3.7747335393001785e-15
+End to end test EU average:  -4.2347335393001785e-15
 ---Values---
 OPT Train:  -2.4158661663956494e-15
 OPT Test:  -3.7747335393001785e-15
